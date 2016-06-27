@@ -19,13 +19,13 @@ RUN wget https://download.elastic.co/logstash/logstash/logstash-2.3.3.tar.gz && 
 VOLUME ["/data"]
 
 # Mount logstash.conf config
-ADD config/logstash.conf /logstash/logstash.conf
+ADD config/logstash.conf /logstash/config/logstash.conf
 
 # Define working directory.
 WORKDIR /data
 
 # Define default command.
-CMD ["/logstash/bin/logstash", "-f", "/logstash/logstash.conf"]
+CMD ["/logstash/bin/logstash", "-f", "/logstash/config/logstash.conf"]
 
 EXPOSE 3333
 EXPOSE 3334
