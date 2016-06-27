@@ -26,3 +26,6 @@ WORKDIR /data
 
 # Define default command.
 CMD ["/logstash/bin/logstash", "-f", "/logstash/config/logstash.conf"]
+
+EXPOSE 3333
+EXPOSE 3334
