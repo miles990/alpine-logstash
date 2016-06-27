@@ -18,19 +18,10 @@ RUN wget https://download.elastic.co/logstash/logstash/logstash-2.3.3.tar.gz && 
 # Create a logstash.conf and elasticsearch host set machine host address
 RUN	touch logstash.conf && \
 	echo 'input { tcp { port => 3333 type => "text event"} tcp { port => 3334 type => "json event" codec => json_lines {} } }' >> logstash.conf && \
-	echo "output { elasticsearch { hosts => [$(/sbin/ip route | awk '/default/ { print $3 }'):9200] } }" >> logstash.conf
-
-# Define mountable directories.
-VOLUME ["/data"]
-
-# Mount logstash.conf config
-ADD config/logstash.conf /logstash/config/logstash.conf
-
-# Define working directory.
-WORKDIR /data
+	HOST_IP="$(ip route|awk '/default/ {print $3}'):9200";echo 'output { elasticsearch { hosts => ["'$HOST_IP'"] } }' >> logstash.conf
 
 # Define default command.
-CMD ["/logstash/bin/logstash", "-f", "/logstash/config/logstash.conf"]
+CMD ["/logstash/bin/logstash", "agent", "-f", "/logstash.conf"]
 
 EXPOSE 3333
 EXPOSE 3334
